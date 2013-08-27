@@ -1,25 +1,31 @@
- /**
- *
- * jQuery Time Elapse Plugin
- *
- * Copyright (c) 2013 Wu Yongfeng (warrenwyf [at] gmail.com)
- *
- * Licensed under the MIT license:
- * http://www.opensource.org/licenses/mit-license.php
- *
- * Project home:
- * https://github.com/warrenwyf/jquery-timeelapse
- *
- * Version: 1.0.1
- *
- */
- (function($){
-	$.timeelapse = function(deltaMsecs){
-		return toPrettyString(deltaMsecs);
+/**
+*
+* jQuery Time Elapse Plugin - update text of element dynamically 
+* Fork by balazs.nemeth at edudoo.com
+*
+* Copyright (c) 2013 Wu Yongfeng (warrenwyf [at] gmail.com)
+*
+* Licensed under the MIT license:
+* http://www.opensource.org/licenses/mit-license.php
+*
+* Project home:
+* https://github.com/warrenwyf/jquery-timeelapse
+*
+* Version: 1.0.1
+*
+*/
+(function($){
+	$.timeelapse = function(deltaMsecs,ref){
+		deltaMsecs = parseInt(deltaMsecs);
+		setInterval(function(){
+			deltaMsecs += 1000;
+			var str = toPrettyString(deltaMsecs);
+			ref.html(str);
+		},1000)
 	};
-	
+
 	$$ = $.timeelapse;
-	
+
 	$.extend($$, {
 		settings: {
 			showMsecs: false,
@@ -33,7 +39,7 @@
 				separator: ' '
 			}
 		},
-		
+
 		/**
 		* Replace %d in pattern with the number.
 		*/
@@ -42,11 +48,11 @@
 				var p = this.settings.patterns[patternName];
 				if(p===undefined)
 					return;
-				
+
 				if( number > 0 ){
 					if(patternName==='milliseconds' && !this.settings.showMsecs)
 						return;				
-				
+
 					return p.replace(/%d/g, number);
 				} else if ( number == 0 ) {
 					if(patternName==='milliseconds' && this.settings.showMsecs){
@@ -57,7 +63,7 @@
 				}
 			}
 		},
-	
+
 		/**
 		* Format milliseconds to readable string.
 		*/
@@ -73,7 +79,7 @@
 			var days = hours / 24;
 			var dDays = Math.floor(days % 365);
 			var dYears = Math.floor(days / 365);
-			
+
 			var p = this.settings.patterns;
 			var words = [
 				this.getString('years', Math.floor(dYears)) ,
@@ -86,9 +92,9 @@
 			return $.trim(words.join(separator));
 		}
 	});
-	
+
 	function toPrettyString(deltaMsecs) {
 		return $$.toPrettyString(deltaMsecs);
 	}
-	
- })(jQuery);
+
+})(jQuery);
